@@ -1,0 +1,40 @@
+const C="titan-gym-final-v2";
+const A=["./","./index.html","./manifest.webmanifest"];
+
+self.addEventListener("install",e=>{
+  e.waitUntil(
+    caches.open(C).then(async c=>{
+      await c.addAll(A);
+      try{
+        await c.add("https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js");
+      }catch(e){}
+      try{
+        await c.add("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js");
+      }catch(e){}
+      return self.skipWaiting();
+    })
+  );
+});
+
+self.addEventListener("activate",e=>{
+  e.waitUntil(
+    caches.keys().then(keys=>
+      Promise.all(
+        keys.filter(k=>k!==C).map(k=>caches.delete(k))
+      )
+    ).then(()=>self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch",e=>{
+  e.respondWith(
+    caches.match(e.request).then(r=>
+      r ||
+      fetch(e.request).then(x=>{
+        const y=x.clone();
+        caches.open(C).then(c=>c.put(e.request,y));
+        return x;
+      }).catch(()=>caches.match("./index.html"))
+    )
+  );
+});
