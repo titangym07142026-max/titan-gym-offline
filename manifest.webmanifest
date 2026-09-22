@@ -1,9 +1,1 @@
-{
-  "name":"Titan Gym Offline Registration",
-  "short_name":"Titan Gym",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#f3f4f6",
-  "theme_color":"#111827",
-  "icons":[]
-}
+{"name":"Titan Gym Entrance QR","short_name":"Titan Gym","start_url":"./","display":"standalone","background_color":"#f3f4f6","theme_color":"#111827"}
